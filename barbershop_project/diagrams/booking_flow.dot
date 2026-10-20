@@ -1,0 +1,40 @@
+digraph BookingFlow {
+  graph [rankdir=TB, bgcolor="#f6f5f0", pad="0.28", nodesep="0.32", ranksep="0.42", splines=ortho, fontname="Arial", label="BARBERSHOP BOOKING MANAGEMENT SYSTEM — CUSTOMER BOOKING FLOW", labelloc=t, fontsize=19, fontcolor="#183b2b"];
+  node [fontname="Arial", fontsize=10, style="filled,rounded", color="#b9c9b8", fillcolor="#fffefa", fontcolor="#17251f", penwidth=1.2, margin="0.14,0.10"];
+  edge [fontname="Arial", fontsize=9, color="#56735f", fontcolor="#355342", penwidth=1.2, arrowsize=0.75];
+  start [label="START", shape=oval, fillcolor="#d4ee9d", color="#5d833f"];
+  home [label="Open barbershop homepage", shape=box];
+  browse [label="Browse services, prices,\nsenior barbers and reviews", shape=box];
+  book [label="Select ‘Book Appointment’", shape=box, fillcolor="#e8f0e4"];
+  logged [label="Customer signed in?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
+  login [label="Customer login / registration", shape=box];
+  auth [label="Credentials valid?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
+  error [label="Show sign-in error\nand allow retry", shape=box, fillcolor="#fae8e5", color="#c66a61"];
+  form [label="Choose service, barber,\ndate, time and optional note", shape=box, fillcolor="#e8f0e4"];
+  valid [label="Inputs valid and time\nwithin opening hours?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
+  fix [label="Show validation message\nand correct the details", shape=box, fillcolor="#fae8e5", color="#c66a61"];
+  slot [label="Barber available for the\nfull service duration?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
+  alternatives [label="Show conflict message;\nchoose another time or barber", shape=box, fillcolor="#fff5dd", color="#d3a64d"];
+  save [label="Save booking and prevent\noverlapping barber appointments", shape=box, fillcolor="#dfeee3", color="#5d936f"];
+  confirm [label="Display booking reference\nand confirmation", shape=box, fillcolor="#d4ee9d", color="#5d833f"];
+  arrive [label="Customer arrives; staff\nverifies the booking", shape=box];
+  done [label="Barber completes service\nand updates status", shape=box];
+  review [label="Customer may submit a review\nafter completion; staff may moderate", shape=box];
+  end [label="END", shape=oval, fillcolor="#d4ee9d", color="#5d833f"];
+  start -> home -> browse -> book -> logged;
+  logged -> form [label="YES"];
+  logged -> login [label="NO"];
+  login -> auth;
+  auth -> form [label="YES"];
+  auth -> error [label="NO"];
+  error -> login;
+  form -> valid;
+  valid -> slot [label="YES"];
+  valid -> fix [label="NO"];
+  fix -> form;
+  slot -> save [label="YES"];
+  slot -> alternatives [label="NO"];
+  alternatives -> form;
+  save -> confirm -> arrive -> done -> review -> end;
+  {rank=same; form; alternatives}
+}
