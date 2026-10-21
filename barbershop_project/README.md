@@ -1,72 +1,129 @@
 # Barbershop Booking Management System
 
-A self-contained local prototype for a Computer Engineering Software Design project. It includes a responsive public website, customer registration/login, role-based staff login, appointment booking with overlap checks, booking status updates, customer reviews with moderation, barber earnings estimates, owner expense records and pay-rule/service configuration, SQL schema, diagrams, project documentation, a test plan, and a presentation.
+This is the browser-based version of our barbershop project. The frontend uses plain HTML, CSS, and JavaScript. Supabase provides the account system and shared database. There is no Python server to run for this version.
 
-## Start the application
+The starting brand name on the page is **Northline Barbershop**. It is sample branding for the project, so change it if your group has a real shop name.
 
-Requirements: Python 3.10 or later. The app uses only Python's standard library; no `pip install` is required.
+## What is included
 
-1. Extract the ZIP file.
-2. Open a terminal in `barbershop_project/app/`.
-3. Run `python app.py`.
-4. Open `http://127.0.0.1:8000` in a browser on the same computer.
-5. Stop the server with `Ctrl+C`.
+- Homepage, services, barber profiles, and approved reviews
+- Customer account registration and sign-in
+- Separate Customer Login and Staff Login entry points
+- Customer bookings, booking history, cancellation rules, and reviews
+- Admin booking management, schedule availability, and review moderation
+- Barber schedules, job status updates, and their own earnings estimates
+- Owner controls for services, staff roles, barber profiles, pay settings, expenses, and reports
+- Supabase database schema with Row Level Security (RLS), booking functions, and overlap protection
+- Aligned engineering flowcharts, use-case diagram, requirements document, progress report, test plan, and presentation
 
-The SQLite database is generated automatically at `app/barbershop.db` the first time the app starts. To reset all prototype data, stop the server and delete that database file; the next launch recreates the demo accounts and services.
+## 1. Open the website on your laptop
 
-## Sample accounts
+You can preview the layout without setting up the database:
 
-| Role | Username | Password |
-|---|---|---|
-| Customer | `customer` | `customer123` |
-| Admin | `admin` | `admin123` |
-| Barber / employee | `barber1` | `barber123` |
-| Barber / employee | `barber2` | `barber123` |
-| Owner | `owner` | `owner123` |
+1. Extract this project folder.
+2. Double-click `index.html`, or use VS Code Live Server if you have it.
+3. The yellow Preview Mode notice means Supabase has not been configured yet. The sample services, barbers, and reviews are only for layout preview. Sign-in and booking are not active in preview mode.
 
-Select **Customer login** for the customer account. Select **Staff login** for admin, barber, and owner accounts. New customer registration is available from the customer login.
+For real accounts and appointments, complete the Supabase setup below.
 
-## Key files
+## 2. Create the Supabase database
 
-- `app/app.py` — Python standard-library HTTP server, API, authentication, and appointment business rules.
-- `app/index.html` — responsive UI and client-side behavior.
-- `database_schema.sql` — SQLite schema for users, services, barber profiles, appointments, reviews, expenses, and audit records.
-- `diagrams/booking_flow.png` / `.svg` — booking engineering flowchart with diamond decision nodes.
-- `diagrams/role_access.png` / `.svg` — role-based login and access flow.
-- `diagrams/use_case.png` / `.svg` — high-level use-case overview.
-- `docs/Project_Documentation.docx` — requirements, system design, database description, test plan, setup, and limitations.
-- `docs/Project_Progress_Report.docx` — editable progress and individual contribution draft.
-- `docs/Project_Presentation.pptx` — project overview slides.
-- `docs/Test_Plan.csv` — test cases and prototype smoke-test results.
+1. Create a project at [Supabase](https://supabase.com/).
+2. Open **SQL Editor** in that project.
+3. Open `supabase/schema.sql` from this folder, copy the whole file, paste it into a new SQL query, and run it.
+4. Confirm the query completes successfully. It creates the tables, row-level security policies, booking functions, default barber hours, and six sample services.
+5. Replace the sample service names, descriptions, prices, and durations with the real menu through the Owner dashboard.
 
-## Included implemented demo behavior
+Default barber hours are **Tuesday to Sunday, 9:00 AM to 6:00 PM, with a 1:00–2:00 PM break**. Monday is closed. Update the availability table or use the Admin/Owner dashboard if the real hours are different.
 
-- Public service, barber, and approved-review sections.
-- Separate customer and staff login portals, with the account's assigned role deciding the dashboard.
-- Customer registration, booking, viewing personal booking history, and cancellation subject to a 24-hour rule.
-- Service-duration and opening-hours validation; overlapping appointments for the same barber are rejected.
-- Barber schedule and status actions for assigned bookings.
-- Admin booking operations and review moderation.
-- Owner staff account creation/deactivation, service/pricing updates, expense recording, pay-rule configuration, cross-barber earnings estimates, and business summary metrics.
-- Customer review submission only for a completed personal appointment; public publication requires moderation.
+## 3. Connect the website to Supabase
 
-## Important limitations
+1. In Supabase, open the project API settings.
+2. Copy the **Project URL** and the **publishable key** (or legacy `anon` key).
+3. Open `js/config.js` in a code editor.
+4. Replace the two `PASTE_...` placeholder values, keeping the quote marks.
+5. Save and refresh the website.
 
-This is a classroom prototype, not a production-ready service. Its in-memory sessions disappear when the server restarts. It binds to `127.0.0.1`, does not send actual email/SMS notifications, does not process payments, and has no calendar/scheduling integration. The sample credentials are public by design. There is no HTTPS, production-grade CSRF protection, rate-limiting, password recovery, professional payroll/accounting integration, or deployment hardening. Before real use, the system needs a security review, production session handling, backups, TLS, stronger operational logging, validated opening hours/pay policies, and real user acceptance testing.
+**Never paste a `service_role` key or other secret key into `js/config.js`.** Browser files are visible to anyone who visits the site. The public key is only safe for this use because the database policies limit which actions each role can do.
 
-## Booking rules used by the demo
+## 4. Make the site public with GitHub Pages
 
-- Opening schedule: Tuesday through Sunday, 9:00 AM–6:00 PM; closed Mondays. Individual barber shifts, breaks, and leave days are not separately modeled yet.
-- Appointment start times use 30-minute increments and must be in the future.
-- The full service duration must end by closing time.
-- Overlap checks exclude cancelled and no-show appointments.
-- Customers can cancel only their own bookings and must do so at least 24 hours before the appointment.
-- Only the assigned barber or authorized staff can update appointment status.
-- Reviews are available only after a customer's appointment is marked completed and remain hidden until an admin or owner approves them.
-- Barber commissions are calculated from completed service value using the owner-configured commission rate. Fixed/hybrid base pay is shown in the monthly estimate. These are estimates and are not payroll approvals.
+This repository currently has the earlier Python version inside the `barbershop_project` folder. For the static version, the important change is to put the new `index.html` at the **root of the GitHub repository** (not only inside a subfolder).
 
-## Notes for the project submission
+1. Make a backup or new branch before replacing files.
+2. Copy `index.html`, the `css`, `js`, `supabase`, `diagrams`, `docs`, and `tests` folders, `.nojekyll`, and this `README.md` into the root of your local repository.
+3. Keep the existing `barbershop_project` folder as a backup until the new version is working. GitHub Pages will use the root `index.html`.
+4. Commit and push the updated files to the `main` branch.
+5. On GitHub, open **Settings → Pages**.
+6. Choose **Deploy from a branch**, select `main`, choose `/(root)`, and save.
+7. Wait for GitHub Pages to finish. The expected project address is `https://mraaligato-bit.github.io/barbershop-booking-management-system/`. Use the link GitHub shows if it differs.
 
-The latest clean API smoke-test run passed all 19 scripted API cases. Full UI inspection, stakeholder acceptance, and production security tests remain outstanding.
+GitHub's official guide: [GitHub Pages quickstart](https://docs.github.com/en/pages/quickstart).
 
-The reports are working drafts. Confirm all assumptions with the group and instructor, especially actual shop hours, cancellation policy, barber pay rules, and whether the chosen implementation technology is allowed. The project-progress percentage is an estimate of the prototype artifact package, not a verified measure of the entire class group's work. The individual contribution section must match the student's real contribution.
+## 5. Set the Supabase Auth redirect address
+
+In Supabase, open **Authentication → URL Configuration**.
+
+- Set the Site URL to `https://mraaligato-bit.github.io/barbershop-booking-management-system/` after GitHub Pages is published.
+- Add that same URL to the allowed redirect URLs.
+- For local testing, also allow your local address (for example, `http://localhost:5500/**` when using VS Code Live Server).
+- Decide if email confirmation should be required. When confirmation is on, users must click their confirmation email before signing in.
+
+Test registration, confirmation, and sign-in again from the published website after changing these settings.
+
+## 6. Create the first Owner account
+
+1. Open the website and choose **Customer login → Create customer account**.
+2. Register using the email address that should control the shop.
+3. Confirm the email if Supabase requires it.
+4. In Supabase SQL Editor, run the following command after replacing the sample email with the one you registered. Do this only for your own Owner account.
+
+```sql
+update public.profiles
+set role = 'owner', updated_at = now()
+where id = (
+  select id from auth.users
+  where lower(email) = lower('YOUR_EMAIL_HERE')
+);
+```
+
+5. Sign in again using **Staff login**. Your account should open the Owner dashboard.
+6. Have each staff member register or be invited to Supabase Auth first. From the Owner dashboard, assign that account the Barber or Admin role. Public sign-up always starts with the Customer role.
+7. When a user is assigned the Barber role, the database creates a barber profile, default availability, and pay settings. Update those details before the shop uses the booking calendar.
+
+## 7. Customize the page
+
+| Change | File or place |
+|---|---|
+| Shop name, page headings, buttons, explanatory text | `index.html` |
+| Colors, type, spacing, borders, layout, mobile view | `css/styles.css` — start in `:root` |
+| Supabase Project URL and public key | `js/config.js` |
+| Preview-only sample services and barber cards | `js/app.js` — `DEMO_SERVICES` and `DEMO_BARBERS` |
+| Currency, date formatting, booking form, dashboard behavior | `js/app.js` — comments at the top |
+| Actual service list / starter prices | Owner dashboard or seed rows near the bottom of `supabase/schema.sql` |
+| Roles, table rules, and booking validation | `supabase/schema.sql` |
+| Booking and login diagrams | `diagrams/booking_flow.dot` and `diagrams/role_access.dot` |
+| Project write-up and progress report | `docs/` |
+
+CSS tip: Change one or two `:root` variables at a time and refresh. `--paper` changes the warm background, `--ink` controls the dark green-black parts, and `--accent` changes the gold highlights.
+
+## 8. How booking works
+
+- A customer selects a service, barber, date, and available time.
+- The booking form asks Supabase for open 15-minute start intervals based on the barber's hours, break, service duration, and existing appointments.
+- When the customer confirms, the database checks the slot again and uses an exclusion constraint to prevent overlapping active appointments for the same barber.
+- The service price and duration are read from the database, not trusted from the browser.
+- Customers can cancel their own confirmed booking only at least 24 hours before it starts.
+- Customers can submit a review only for their own completed appointment. Reviews need Admin or Owner approval before appearing publicly.
+- Barbers update a booking through confirmed → checked in → in service → completed, or mark a valid no-show.
+- Commission estimates are calculated from completed services and the Owner's configured pay rules. The numbers are estimates; final payroll should be checked separately.
+
+## 9. What has and has not been tested
+
+The static code checks verify that the expected files exist, the JavaScript parses, the HTML points to the correct assets, and the SQL includes the key RLS policies/functions. They do **not** prove that the hosted Supabase project is configured correctly. Run the test cases in `tests/TEST_CASES.md` after setting up your own Supabase project.
+
+Before sharing the site, make test accounts for all four roles and verify that a customer cannot see another customer's bookings, a barber cannot see another barber's pay, and a regular user cannot promote their own account. If anything fails, stop and review the SQL policies before using real customer information.
+
+## Current limits
+
+This is a school project version. It does not send automatic SMS/email reminders, accept payments, handle refunds, calculate tax, or provide a full accounting system. Email delivery depends on the Supabase Auth settings. A free database plan can also have usage limits. Keep backups and do not use sample prices or sample barber profiles as if they were the real shop's information.

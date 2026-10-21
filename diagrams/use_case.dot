@@ -1,0 +1,28 @@
+// GUIDE: Edit node labels and colors here. Regenerate PNG/SVG with the commands in docs/CUSTOMIZATION_GUIDE.md.
+digraph UseCase {
+  graph [rankdir=LR, splines=ortho, nodesep=0.34, ranksep=0.8, pad=0.25, bgcolor="white", fontname="Arial", labelloc=t, label="BARBERSHOP BOOKING MANAGEMENT SYSTEM\nUse-Case Overview", fontsize=18];
+  node [fontname="Arial", fontsize=9, color="#50634f", fontcolor="#172016", penwidth=1.1, margin="0.12,0.06"];
+  edge [color="#778174", arrowsize=0.65, penwidth=0.9];
+  customer [label="Customer", shape=plaintext, fontsize=12, fontname="Arial Bold"];
+  admin [label="Admin", shape=plaintext, fontsize=12, fontname="Arial Bold"];
+  barber [label="Barber / Employee", shape=plaintext, fontsize=12, fontname="Arial Bold"];
+  owner [label="Owner", shape=plaintext, fontsize=12, fontname="Arial Bold"];
+  subgraph cluster_system {
+    label="System Boundary"; color="#a9b7a0"; style="rounded"; penwidth=1.2; margin=18; fontname="Arial Bold"; fontsize=12;
+    browse [label="Browse services and\nbarber profiles", shape=ellipse, style=filled, fillcolor="#edf2e8"];
+    signup [label="Register / sign in", shape=ellipse, style=filled, fillcolor="#edf2e8"];
+    book [label="Book / cancel own\nappointment", shape=ellipse, style=filled, fillcolor="#e0eaf7"];
+    ownhist [label="View own bookings\nand submit review", shape=ellipse, style=filled, fillcolor="#e0eaf7"];
+    appt [label="Manage all bookings\nand daily schedule", shape=ellipse, style=filled, fillcolor="#f0e5d4"];
+    moderate [label="Approve or reject\ncustomer reviews", shape=ellipse, style=filled, fillcolor="#f0e5d4"];
+    work [label="View assigned bookings\nand update status", shape=ellipse, style=filled, fillcolor="#e4e8df"];
+    earnings [label="View own earnings\nby day / week / month", shape=ellipse, style=filled, fillcolor="#e4e8df"];
+    manage [label="Manage services, staff,\npay settings and expenses", shape=ellipse, style=filled, fillcolor="#dcefe3"];
+    reports [label="View business revenue,\npayroll and reports", shape=ellipse, style=filled, fillcolor="#dcefe3"];
+  }
+  {rank=same; customer; admin; barber; owner;}
+  customer -> browse; customer -> signup; customer -> book; customer -> ownhist;
+  admin -> appt; admin -> moderate;
+  barber -> work; barber -> earnings;
+  owner -> appt; owner -> moderate; owner -> manage; owner -> reports;
+}

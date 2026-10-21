@@ -1,23 +1,22 @@
-Test ID,Area,Test scenario,Expected result,Actual result,Status
-T01,Public catalog,Request active services and barber profiles,Returns active services and barber profiles,5 services and 2 barbers returned,PASS
-T02,Authentication,Log in with a valid customer account on customer portal,Customer session starts,Customer role returned and session cookie issued,PASS
-T03,Authentication,Try customer credentials on staff portal,Request is rejected,HTTP 403 with portal mismatch message,PASS
-T04,Booking,Create a future appointment in an open slot,Booking reference is returned and appointment saved,HTTP 201 and a unique reference returned,PASS
-T05,Booking conflict,Create a second booking overlapping the same barber and time,Second booking is rejected,HTTP 409 conflict returned,PASS
-T06,Privacy,Customer requests their appointment list,Only their own appointments are returned,Customer session returned only one personal appointment,PASS
-T07,Authorization,Customer calls owner-only payroll endpoint,Request is rejected,HTTP 403 returned,PASS
-T08,Barber access,Sign in as barber and request appointments,Barber sees assigned appointments only,Barber login passed and assigned booking returned,PASS
-T09,Appointment lifecycle,Assigned barber moves booking from confirmed through checked-in and in-service to completed,Valid transitions are saved,All three status transitions returned success,PASS
-T10,Review,Customer submits review for their own completed appointment,Review is saved but hidden pending moderation,HTTP 201 returned and public review list stayed unchanged,PASS
-T11,Review moderation,Admin lists pending reviews,Authorized admin can review pending submissions,Admin session succeeded and pending review returned,PASS
-T12,Authorization,Admin attempts owner-only service management,Request is rejected,HTTP 403 returned,PASS
-T13,Owner payroll,Owner requests cross-barber earnings estimates,Barber-level earnings rows are returned,HTTP 200 with two seeded barber rows,PASS
-T14,Review moderation,Owner approves a pending review,Approved review becomes publicly visible,Approval returned success and review appeared publicly,PASS
-T15,Service management,Owner adds a service then deactivates it,Inactive service remains manageable by owner and is hidden publicly,Owner listing showed inactive service and public list did not,PASS
-T16,Expenses,Owner records a valid expense,Expense is stored,HTTP 201 returned,PASS
-T17,Registration,Create a customer account with valid details,Customer account is created and signed in,HTTP 201 and customer role returned,PASS
-T18,Staff account management,Owner creates and deactivates a staff account,Owner can create admin/barber accounts and revoke access,Account created and deactivation saved,PASS
-T19,Review access,Admin requests the moderation queue,Authorized admin can access review moderation,HTTP 200 returned,PASS
-T20,UI/UX,Manual browser review on desktop and mobile,No clipping and all visible controls work,Not completed in API smoke-test run,NOT RUN
-T21,Security,Production security review including CSRF,HTTPS,rate limits and session expiry,Findings documented and resolved,Not implemented; prototype limitation,NOT RUN
-T22,User acceptance,Walkthrough with barbershop stakeholder and instructor,Feedback is recorded and changes implemented,Pending group validation,NOT RUN
+ID,Area,Test,Expected Result,Status
+T01,Public,Open homepage with placeholder configuration,Preview message and sample cards appear,Static check only
+T02,Auth,Register customer,Account and customer profile are created,Not run against live project
+T03,Auth,Sign in customer,Customer dashboard opens,Not run against live project
+T04,Booking,Load available slots,Only valid slots are shown,Not run against live project
+T05,Booking,Book available slot,Confirmed appointment is saved,Not run against live project
+T06,Booking,Attempt overlapping booking,Database refuses conflict,Not run against live project
+T07,Privacy,Read another customer's appointment,RLS hides the record,Not run against live project
+T08,Cancellation,Cancel inside 24 hours,Database refuses cancellation,Not run against live project
+T09,Reviews,Review completed service,Review is saved pending moderation,Not run against live project
+T10,Reviews,Review non-completed service,Database rejects review,Not run against live project
+T11,Admin,View and manage bookings,Admin dashboard and status updates work,Not run against live project
+T12,Schedule,Change availability,New slot list reflects hours and breaks,Not run against live project
+T13,Reviews,Approve review,Approved review appears publicly,Not run against live project
+T14,Barber,View bookings,Only assigned bookings appear,Not run against live project
+T15,Barber,Update booking status,Allowed work-status transitions work,Not run against live project
+T16,Pay,View barber earnings,Only own earnings and pay settings appear,Not run against live project
+T17,Owner,Add or update service,Public service menu updates,Not run against live project
+T18,Owner,Assign barber role,Profile availability and pay settings are created,Not run against live project
+T19,Owner,Record expense,Expense appears in owner's report,Not run against live project
+T20,Security,Customer tries owner-only function,Database rejects unauthorized request,Not run against live project
+T21,Deployment,Auth email redirect,Confirmation link returns to published site,Not run against live project

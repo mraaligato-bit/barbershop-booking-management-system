@@ -1,0 +1,55 @@
+// GUIDE: Edit node labels and colors here. Regenerate PNG/SVG with the commands in docs/CUSTOMIZATION_GUIDE.md.
+digraph BookingFlow {
+  graph [rankdir=TB, splines=ortho, nodesep=0.42, ranksep=0.50, pad=0.25, bgcolor="white", fontname="Arial", labelloc=t, label="BARBERSHOP BOOKING MANAGEMENT SYSTEM\nCustomer Booking Flow", fontsize=18];
+  node [fontname="Arial", fontsize=10, style="filled,rounded", color="#50634f", fillcolor="#edf2e8", fontcolor="#172016", penwidth=1.25, margin="0.17,0.10"];
+  edge [fontname="Arial", fontsize=9, color="#536052", fontcolor="#374235", arrowsize=0.7, penwidth=1.05];
+  start [label="START", shape=oval, fillcolor="#d8ead7", width=1.35];
+  home [label="Open barbershop homepage", shape=box];
+  browse [label="Browse services, prices,\nand barber profiles", shape=box];
+  choose [label="Choose service, barber,\ndate, and preferred time", shape=box];
+  signed [label="Signed in?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.65, height=0.85];
+  login [label="Customer sign in\nor create account", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  credentials [label="Credentials valid?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.65, height=0.85];
+  login_error [label="Show sign-in error;\nlet customer retry", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  role [label="Account role is\nCustomer?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.8, height=0.95];
+  role_error [label="Send staff to the\ncorrect staff dashboard", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  validate [label="Validate service, date,\nbarber, and requested time", shape=box];
+  valid [label="Details valid?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.6, height=0.85];
+  correct [label="Show missing or invalid\nfields", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  available [label="Slot fits barber hours\nand is available?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=2.0, height=1.0];
+  alternatives [label="Show other available times", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  save [label="Database saves booking using\ncurrent service price and duration", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  race [label="No overlapping booking\nwas saved first?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=2.0, height=1.0];
+  conflict [label="Tell customer the time was taken\nand ask them to choose again", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  confirm [label="Show booking reference\nand confirmation", shape=box, fillcolor="#dcefe3", color="#42815a"];
+  end [label="END", shape=oval, fillcolor="#d8ead7", width=1.25];
+  stop1 [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  stop2 [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  stop3 [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  stop4 [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  stop5 [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  start -> home -> browse -> choose -> signed;
+  signed -> role [label="Yes"];
+  signed -> login [label="No"];
+  login -> credentials;
+  credentials -> role [label="Yes"];
+  credentials -> login_error [label="No"];
+  login_error -> stop1;
+  role -> validate [label="Yes"];
+  role -> role_error [label="No"];
+  role_error -> stop2;
+  validate -> valid;
+  valid -> available [label="Yes"];
+  valid -> correct [label="No"];
+  correct -> stop3;
+  available -> save [label="Yes"];
+  available -> alternatives [label="No"];
+  alternatives -> stop4;
+  save -> race;
+  race -> confirm [label="Yes"];
+  race -> conflict [label="No"];
+  conflict -> stop5;
+  confirm -> end;
+  {rank=same; login_error; role_error;}
+  {rank=same; correct; alternatives; conflict;}
+}

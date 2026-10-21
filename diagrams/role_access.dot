@@ -1,0 +1,42 @@
+// GUIDE: Edit node labels and colors here. Regenerate PNG/SVG with the commands in docs/CUSTOMIZATION_GUIDE.md.
+digraph RoleAccess {
+  graph [rankdir=TB, splines=ortho, nodesep=0.38, ranksep=0.48, pad=0.25, bgcolor="white", fontname="Arial", labelloc=t, label="BARBERSHOP BOOKING MANAGEMENT SYSTEM\nLogin and Role Access", fontsize=18];
+  node [fontname="Arial", fontsize=10, style="filled,rounded", color="#50634f", fillcolor="#edf2e8", fontcolor="#172016", penwidth=1.25, margin="0.17,0.10"];
+  edge [fontname="Arial", fontsize=9, color="#536052", fontcolor="#374235", arrowsize=0.7, penwidth=1.05];
+  start [label="START", shape=oval, fillcolor="#d8ead7", width=1.25];
+  home [label="Open homepage", shape=box];
+  choose [label="Choose login type", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.8, height=0.9];
+  customer [label="Customer login / sign up", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  staff [label="Staff login", shape=box, fillcolor="#f0e5d4", color="#ad852d"];
+  auth [label="Email and password\nvalid?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.75, height=0.9];
+  auth_error [label="Show login error", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  auth_end [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  match [label="Role matches the\nselected login page?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=2.0, height=1.0];
+  mismatch [label="Ask user to use the\ncorrect login page", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  mismatch_end [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  customer_dash [label="Customer dashboard\nOwn bookings and reviews", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  admin_dash [label="Admin dashboard\nBookings, schedules, review moderation", shape=box, fillcolor="#f0e5d4", color="#ad852d"];
+  barber_dash [label="Barber dashboard\nAssigned jobs and own earnings", shape=box, fillcolor="#e4e8df", color="#73846b"];
+  owner_dash [label="Owner dashboard\nStaff, services, payroll, reports", shape=box, fillcolor="#dcefe3", color="#42815a"];
+  end [label="END / SIGN OUT", shape=oval, fillcolor="#d8ead7", width=1.6];
+  start -> home -> choose;
+  choose -> customer [label="Customer"];
+  choose -> staff [label="Staff"];
+  customer -> auth;
+  staff -> auth;
+  auth -> match [label="Yes"];
+  auth -> auth_error [label="No"];
+  auth_error -> auth_end;
+  match -> customer_dash [label="Customer account"];
+  match -> admin_dash [label="Admin account"];
+  match -> barber_dash [label="Barber account"];
+  match -> owner_dash [label="Owner account"];
+  match -> mismatch [label="Wrong login type"];
+  mismatch -> mismatch_end;
+  {rank=same; customer; staff;}
+  {rank=same; customer_dash; admin_dash; barber_dash; owner_dash;}
+  customer_dash -> end;
+  admin_dash -> end;
+  barber_dash -> end;
+  owner_dash -> end;
+}

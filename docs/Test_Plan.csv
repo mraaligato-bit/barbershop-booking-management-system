@@ -1,0 +1,22 @@
+ID,Area,Test,Expected Result,Status
+T01,Public,Open homepage with placeholder configuration,Preview message and sample cards appear,Static check only
+T02,Auth,Register customer,Account and customer profile are created,Not run against live project
+T03,Auth,Sign in customer,Customer dashboard opens,Not run against live project
+T04,Booking,Load available slots,Only valid slots are shown,Not run against live project
+T05,Booking,Book available slot,Confirmed appointment is saved,Not run against live project
+T06,Booking,Attempt overlapping booking,Database refuses conflict,Not run against live project
+T07,Privacy,Read another customer's appointment,RLS hides the record,Not run against live project
+T08,Cancellation,Cancel inside 24 hours,Database refuses cancellation,Not run against live project
+T09,Reviews,Review completed service,Review is saved pending moderation,Not run against live project
+T10,Reviews,Review non-completed service,Database rejects review,Not run against live project
+T11,Admin,View and manage bookings,Admin dashboard and status updates work,Not run against live project
+T12,Schedule,Change availability,New slot list reflects hours and breaks,Not run against live project
+T13,Reviews,Approve review,Approved review appears publicly,Not run against live project
+T14,Barber,View bookings,Only assigned bookings appear,Not run against live project
+T15,Barber,Update booking status,Allowed work-status transitions work,Not run against live project
+T16,Pay,View barber earnings,Only own earnings and pay settings appear,Not run against live project
+T17,Owner,Add or update service,Public service menu updates,Not run against live project
+T18,Owner,Assign barber role,Profile availability and pay settings are created,Not run against live project
+T19,Owner,Record expense,Expense appears in owner's report,Not run against live project
+T20,Security,Customer tries owner-only function,Database rejects unauthorized request,Not run against live project
+T21,Deployment,Auth email redirect,Confirmation link returns to published site,Not run against live project

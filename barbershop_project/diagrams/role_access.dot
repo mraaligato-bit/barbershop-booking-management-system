@@ -1,29 +1,42 @@
+// GUIDE: Edit node labels and colors here. Regenerate PNG/SVG with the commands in docs/CUSTOMIZATION_GUIDE.md.
 digraph RoleAccess {
-  graph [rankdir=TB, bgcolor="#f6f5f0", pad="0.28", nodesep="0.35", ranksep="0.55", splines=ortho, fontname="Arial", label="ROLE-BASED ACCESS AND STAFF WORKFLOW", labelloc=t, fontsize=19, fontcolor="#183b2b"];
-  node [fontname="Arial", fontsize=10, style="filled,rounded", color="#b9c9b8", fillcolor="#fffefa", fontcolor="#17251f", penwidth=1.2, margin="0.16,0.10"];
-  edge [fontname="Arial", fontsize=9, color="#56735f", fontcolor="#355342", penwidth=1.2, arrowsize=0.75];
-  start [label="START", shape=oval, fillcolor="#d4ee9d", color="#5d833f"];
-  public [label="Homepage / public pages", shape=box];
-  login [label="Customer login OR\nshared staff login", shape=box, fillcolor="#e8f0e4"];
-  valid [label="Credentials valid?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
-  denied [label="Show error; retry or exit", shape=box, fillcolor="#fae8e5", color="#c66a61"];
-  route [label="Read assigned role from account", shape=box, fillcolor="#e8f0e4"];
-  role [label="Which role?", shape=diamond, style=filled, fillcolor="#fff0c2", color="#b58b28", margin="0.08,0.04"];
-  customer [label="CUSTOMER DASHBOARD\nOwn profile and bookings\nBook / cancel by policy\nReview completed visits only", shape=box, fillcolor="#e5effc", color="#7a9fc8"];
-  admin [label="ADMIN DASHBOARD\nDaily booking operations\nCustomer support and schedules\nModerate reviews / service ops", shape=box, fillcolor="#fff1d8", color="#d2a05b"];
-  barber [label="BARBER DASHBOARD\nAssigned appointments only\nUpdate visit status\nOwn day / week / month earnings", shape=box, fillcolor="#e0f3e4", color="#76a682"];
-  owner [label="OWNER DASHBOARD\nAll bookings and staff accounts\nRevenue, recorded expenses, payroll\nPay rules and business settings", shape=box, fillcolor="#e9e2f7", color="#9b83c8"];
-  audit [label="Log out / end session", shape=box];
-  end [label="END", shape=oval, fillcolor="#d4ee9d", color="#5d833f"];
-  start -> public -> login -> valid;
-  valid -> denied [label="NO"];
-  denied -> login;
-  valid -> route [label="YES"];
-  route -> role;
-  role -> customer [label="CUSTOMER"];
-  role -> admin [label="ADMIN"];
-  role -> barber [label="BARBER"];
-  role -> owner [label="OWNER"];
-  customer -> audit; admin -> audit; barber -> audit; owner -> audit; audit -> end;
-  {rank=same; customer; admin; barber; owner}
+  graph [rankdir=TB, splines=ortho, nodesep=0.38, ranksep=0.48, pad=0.25, bgcolor="white", fontname="Arial", labelloc=t, label="BARBERSHOP BOOKING MANAGEMENT SYSTEM\nLogin and Role Access", fontsize=18];
+  node [fontname="Arial", fontsize=10, style="filled,rounded", color="#50634f", fillcolor="#edf2e8", fontcolor="#172016", penwidth=1.25, margin="0.17,0.10"];
+  edge [fontname="Arial", fontsize=9, color="#536052", fontcolor="#374235", arrowsize=0.7, penwidth=1.05];
+  start [label="START", shape=oval, fillcolor="#d8ead7", width=1.25];
+  home [label="Open homepage", shape=box];
+  choose [label="Choose login type", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.8, height=0.9];
+  customer [label="Customer login / sign up", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  staff [label="Staff login", shape=box, fillcolor="#f0e5d4", color="#ad852d"];
+  auth [label="Email and password\nvalid?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=1.75, height=0.9];
+  auth_error [label="Show login error", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  auth_end [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  match [label="Role matches the\nselected login page?", shape=diamond, style=filled, fillcolor="#fff0c4", color="#ad852d", width=2.0, height=1.0];
+  mismatch [label="Ask user to use the\ncorrect login page", shape=box, fillcolor="#f8e4e0", color="#b95b50"];
+  mismatch_end [label="END", shape=oval, fillcolor="#f8e4e0", color="#b95b50", width=1.05];
+  customer_dash [label="Customer dashboard\nOwn bookings and reviews", shape=box, fillcolor="#e0eaf7", color="#537aa8"];
+  admin_dash [label="Admin dashboard\nBookings, schedules, review moderation", shape=box, fillcolor="#f0e5d4", color="#ad852d"];
+  barber_dash [label="Barber dashboard\nAssigned jobs and own earnings", shape=box, fillcolor="#e4e8df", color="#73846b"];
+  owner_dash [label="Owner dashboard\nStaff, services, payroll, reports", shape=box, fillcolor="#dcefe3", color="#42815a"];
+  end [label="END / SIGN OUT", shape=oval, fillcolor="#d8ead7", width=1.6];
+  start -> home -> choose;
+  choose -> customer [label="Customer"];
+  choose -> staff [label="Staff"];
+  customer -> auth;
+  staff -> auth;
+  auth -> match [label="Yes"];
+  auth -> auth_error [label="No"];
+  auth_error -> auth_end;
+  match -> customer_dash [label="Customer account"];
+  match -> admin_dash [label="Admin account"];
+  match -> barber_dash [label="Barber account"];
+  match -> owner_dash [label="Owner account"];
+  match -> mismatch [label="Wrong login type"];
+  mismatch -> mismatch_end;
+  {rank=same; customer; staff;}
+  {rank=same; customer_dash; admin_dash; barber_dash; owner_dash;}
+  customer_dash -> end;
+  admin_dash -> end;
+  barber_dash -> end;
+  owner_dash -> end;
 }
